@@ -68,60 +68,58 @@ private:
 	Node * head, *tail;
 };
 
-template <class Typename>
+template <class Typename, size_t max_size>
 class CyclicStaticArrayQueue {
 public:
-    CyclicStaticArrayQueue(size_t max_size)
-        :container(new int[max_size]),
-         _max_size(max_size),
-         _size(0),
-         begin(0),
-         end(0)
-    {}
+	CyclicStaticArrayQueue()
+		:_size(0),
+		begin(0),
+		end(0)
+	{}
 
-    size_t size() {
-        return _size;
-    }
+	size_t size() {
+		return _size;
+	}
 
-    bool empty() {
-        return !_size;
-    }
+	bool empty() {
+		return !_size;
+	}
 
-    Typename front() {
-        if (!_size) {
-            throw new std::underflow_error("Container is empty!");
-        }
-        return container[begin];
-    }
+	Typename front() {
+		if (!_size) {
+			throw new std::underflow_error("Container is empty!");
+		}
+		return container[begin];
+	}
 
-    void push(Typename new_value) {
-        if (_size == _max_size) {
-            throw new std::underflow_error("Container is full!");
-        }
-        if (!_size) {
-            container[begin] = new_value;
-            ++end;
-            ++_size;
-            return;
-        }
-        container[end++]= new_value;
-        end %= _max_size;
-        ++_size;
-        return;
-    }
+	void push(Typename new_value) {
+		if (_size == max_size) {
+			throw new std::underflow_error("Container is full!");
+		}
+		if (!_size) {
+			container[begin] = new_value;
+			++end;
+			++_size;
+			return;
+		}
+		container[end++] = new_value;
+		end %= max_size;
+		++_size;
+		return;
+	}
 
-    void pop() {
-        if (!_size) {
-            throw new std::underflow_error("Container is empty!");
-        }
-        ++begin;
-        begin %= _max_size;
-        --_size;
-        return;
-    }
+	void pop() {
+		if (!_size) {
+			throw new std::underflow_error("Container is empty!");
+		}
+		++begin;
+		begin %= max_size;
+		--_size;
+		return;
+	}
 
 private:
-    size_t _size, _max_size;
-    int begin, end;
-    int * container;
+	size_t _size;
+	int begin, end;
+	Typename container[max_size];
 };
