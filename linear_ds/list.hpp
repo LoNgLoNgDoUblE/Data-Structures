@@ -114,10 +114,10 @@ public:
 	}
 
 	void erase(Node * previous_node) {
-		if (previous_node->next = nullptr) {
+		if (previous_node->next == nullptr) {
 			throw new std::underflow_error("List erase iterator outside range!");
 		}
-		if (previous_node->next = tail) {
+		if (previous_node->next == tail) {
 			pop_back();
 			return;
 		}
